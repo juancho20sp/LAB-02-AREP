@@ -26,6 +26,15 @@ public class Browser {
         System.out.println(html);
     }
 
+    public Browser(String URL) {
+        this.url = URL;
+        String html = this.getHtmlFromUrl();
+        this.writeData(html);
+        System.out.println(this.url);
+        System.out.println(" --- HTML ---");
+        System.out.println(html);
+    }
+
     private String askForUrl() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese una URL: ");
