@@ -1,44 +1,76 @@
 package challenge1;
 
-import ex2.Browser;
+import challenge1.utils.DataTypes;
 
 import java.net.*;
 import java.io.*;
-import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+
+/**
+ * @author Juan David Murillo
+ * @version 1.0
+ */
 public class HttpServer {
-    public static void main(String[] args) throws IOException {
-        final int PORT = 1234;
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
 
-        ServerSocket serverSocket = null;
+    public final static Map<String, String> types = new HashMap<String, String>();
+
+    // $ -> delete
+    public static void main(String[] args) {
+        HttpServer httpServer = new HttpServer();
+    }
+
+    public HttpServer() {
+        generateTypesMap();
+        startServer();
+    }
+
+    private void generateTypesMap() {
+        for (DataTypes type : DataTypes.values()) {
+            types.put(type.toString(), type.value);
+        }
+    }
+
+    public void startServer() {
+        int port = this.getPort();
+
+
 
         try {
-            serverSocket = new ServerSocket(PORT);
+            this.serverSocket = new ServerSocket(port);
+            System.out.println("Server listening on port: " + port);
 
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: 35000.");
-            System.exit(1);
-        }
+            while (true) {
+                // Client
+                this.clientSocket = this.serverSocket.accept();
+                System.out.println("Connection established");
 
-        while (true) {
-            try {
-                System.out.println("Listo para recibir ...");
-                Socket clientSocket = serverSocket.accept();
+                // Stream
+                OutputStream outputStream = clientSocket.getOutputStream();
 
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                this.out = new PrintWriter(this.clientSocket.getOutputStream(), true);
+                this.in = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
 
-                String inputLine, outputLine;
+                String input, output;
+                ArrayList<String> request = new ArrayList<>();
 
-                while ((inputLine = in.readLine()) != null) {
-                    System.out.println("Received: " + inputLine);
-                    if (inputLine.isEmpty()) {
+                while ((input = in.readLine()) != null) {
+                    System.out.println("Received: " + input);
+                    request.add(input);
+
+                    if (input.isEmpty()) {
                         break;
                     }
                 }
 
-                // Text
-                outputLine = "HTTP/1.1 200 OK\r\n"
+                // TODO -> handler
+                output = "HTTP/1.1 200 OK\r\n"
                         + "Content-Type: text/html\r\n"
                         + "\r\n"
                         + "<!DOCTYPE html>"
@@ -49,34 +81,28 @@ public class HttpServer {
                         + "</head>"
                         + "<body>"
                         + "My Web Site"
-                        + "<img src='../images/test.jpg'/>"
                         + "</body>"
-                        + "</html>" + inputLine;
+                        + "</html>" + input;
 
-                out.println(outputLine);
-
-                // Images
-//                File file = new File("../images/test.jpg");
-//                OutputStream outputStream = clientSocket.getOutputStream();
-
-//                Files.copy(file.toPath(), outputStream);
-//                outputStream.close();
-
-
+                out.println(output);
                 out.close();
                 in.close();
                 clientSocket.close();
-
-
-            } catch (IOException e) {
-                System.err.println("Accept failed.");
-                System.exit(1);
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getPort() {
+        int port;
+        if (System.getenv("PORT") != null){
+            port = Integer.parseInt(System.getenv("PORT"));
+        } else {
+            port = 1234;
         }
 
-
-
-//        serverSocket.close();
+        return port;
     }
 }
