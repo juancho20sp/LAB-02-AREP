@@ -1,6 +1,6 @@
-package trash;
+package main.challenge1.trash;
 
-//import ex2.Browser;
+//import main.challenge1.ex2.Browser;
 
 import java.net.*;
 import java.io.*;

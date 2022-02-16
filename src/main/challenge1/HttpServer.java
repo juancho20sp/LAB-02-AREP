@@ -1,6 +1,8 @@
-package challenge1;
+package main.challenge1;
 
-import challenge1.utils.DataTypes;
+import main.challenge2.EciSparkServer;
+import main.challenge2.handlers.ResponseHandlers;
+import main.challenge2.utils.DataTypes;
 
 import java.net.*;
 import java.io.*;
@@ -40,9 +42,8 @@ public class HttpServer {
     public void startServer() {
         int port = this.getPort();
 
-
-
         try {
+            // Server
             this.serverSocket = new ServerSocket(port);
             System.out.println("Server listening on port: " + port);
 
@@ -69,20 +70,7 @@ public class HttpServer {
                     }
                 }
 
-                // TODO -> handler
-                output = "HTTP/1.1 200 OK\r\n"
-                        + "Content-Type: text/html\r\n"
-                        + "\r\n"
-                        + "<!DOCTYPE html>"
-                        + "<html>"
-                        + "<head>"
-                        + "<meta charset=\"UTF-8\">"
-                        + "<title>Title of the document</title>\n"
-                        + "</head>"
-                        + "<body>"
-                        + "My Web Site"
-                        + "</body>"
-                        + "</html>" + input;
+                output = EciSparkServer.get(request, outputStream);
 
                 out.println(output);
                 out.close();

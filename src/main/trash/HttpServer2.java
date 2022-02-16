@@ -1,4 +1,4 @@
-package trash;
+package main.challenge1.trash;
 
 import java.net.*;
 import java.io.*;

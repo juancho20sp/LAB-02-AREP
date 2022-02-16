@@ -1,4 +1,4 @@
-package ex3;
+package main.challenge1.ex3;
 
 import java.io.*;
 import java.net.*;

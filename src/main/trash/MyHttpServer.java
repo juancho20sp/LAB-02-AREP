@@ -1,4 +1,4 @@
-package trash;
+package main.challenge1.trash;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

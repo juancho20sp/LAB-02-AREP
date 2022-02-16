@@ -1,4 +1,4 @@
-package ex2;
+package main.challenge1.ex2;
 
 import java.io.*;
 import java.net.MalformedURLException;

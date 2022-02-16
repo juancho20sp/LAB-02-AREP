@@ -1,8 +1,8 @@
-package challenge1.utils;
+package main.challenge2.utils;
 
 public enum DataTypes {
     HTML("text/html"),
-    JAVASCRIPT("text/javascript"),
+    JS("text/javascript"),
     JPEG("image/jpeg"),
     JPG("image/jpg"),
     PNG("image/png"),
